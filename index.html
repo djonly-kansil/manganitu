@@ -1,12 +1,24 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hallo Dunia Ku</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Mobil</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Ternyata Ini Contoh</h1>
-  <p>Ini adalah halaman HTML5 pertamaku.</p>
+  <canvas id="gameCanvas" width="360" height="640"></canvas>
+  <div id="ui">
+    <div id="level"></div>
+    <div id="gameOver" style="display:none">
+      <button id="restartBtn">Main Lagi</button>
+    </div>
+  </div>
+  <div id="mainMenu">
+    <h1 id="title">Game Mobil</h1>
+    <p id="highScoreDisplay"></p>
+    <button id="startGameBtn" class="blink">MAIN</button>
+  </div>
+  <script type="module" src="src/core/main.js"></script>
 </body>
 </html>
