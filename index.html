@@ -10,15 +10,16 @@
   <canvas id="gameCanvas" width="360" height="640"></canvas>
   <div id="ui">
     <div id="level"></div>
-    <div id="gameOver" style="display:none">
-      <button id="restartBtn">Main Lagi</button>
-    </div>
+    <div id="gameOver"></div>
   </div>
   <div id="mainMenu">
+    <div class="road-line top"></div> <!-- Garis atas -->
     <h1 id="title">Game Mobil</h1>
     <p id="highScoreDisplay"></p>
     <button id="startGameBtn" class="blink">MAIN</button>
+    <div class="road-line bottom"></div> <!-- Garis bawah -->
   </div>
-  <script type="module" src="src/core/main.js"></script>
+  <button id="restartBtn">Main Lagi</button>
+  <script type="module" src="main.js"></script>
 </body>
 </html>

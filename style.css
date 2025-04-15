@@ -9,8 +9,9 @@ html, body {
   overflow: hidden;
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  background: linear-gradient(135deg, #1e1e2f, #3b3b5c);
   font-family: 'Digital-7', monospace;
+  position: relative;
 }
 
 canvas {
@@ -31,12 +32,39 @@ canvas {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
+#gameOver {
+  display: none;
+}
+
+#restartBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 15px 25px;
+  font-size: 20px;
+  background: linear-gradient(135deg, #33ccff, #ff99cc);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: none;
+  z-index: 101;
+}
+
+#restartBtn:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 3px 3px 14px rgba(0, 0, 0, 0.5);
+}
+
 .blink {
   animation: blinkAnim 800ms infinite;
 }
 
 @keyframes blinkAnim {
-  0%, 100% { opacity: 1000; }
+  0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
 
@@ -47,32 +75,15 @@ canvas {
 }
 
 #title {
-  font-size: 2.8em;
+  font-size: 60px;
   font-weight: bold;
   background: linear-gradient(270deg, #00f0ff, #ff00c8, #00ff90);
-  background-size: 900% 900%;
+  background-size: 600% 600%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: neonGradient 4s ease infinite;
-  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
-}
-
-#startGameBtn, #restartBtn {
-  padding: 15px 25px;
-  margin: 10px;
-  font-size: 20px;
-  background: linear-gradient(135deg, #33ccff, #ff99cc);
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-#startGameBtn:hover, #restartBtn:hover {
-  transform: scale(1.1);
-  box-shadow: 3px 3px 14px rgba(0, 0, 0, 0.5);
+  animation: neonGradient 3s ease infinite;
+  text-shadow: 0 0 10px #00f0ff, 0 0 20px #ff00c8, 0 0 30px #00ff90;
+  line-height: 1;
 }
 
 #mainMenu {
@@ -83,34 +94,105 @@ canvas {
   text-align: center;
   color: #fff;
   font-family: 'Digital-7', monospace;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 40px;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 50px 60px;
   border-radius: 20px;
+  border: 2px solid #00ff90;
+  box-shadow: 0 0 15px rgba(0, 255, 144, 0.5);
   z-index: 100;
   animation: fadeIn 1s ease;
 }
 
 #mainMenu h1 {
-  font-size: 2.5em;
   margin-bottom: 20px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-#mainMenu button {
-  padding: 15px 25px;
-  font-size: 22px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #33ccff, #ff99cc);
-  border: none;
-  border-radius: 12px;
-  color: #fff;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
+#mainMenu p {
+  font-size: 18px;
+  color: #ccc;
+  margin-bottom: 20px;
 }
 
-#mainMenu button:hover {
-  transform: scale(1.1);
-  box-shadow: 3px 3px 14px rgba(0, 0, 0, 0.5);
+#startGameBtn {
+  padding: 15px 35px;
+  font-size: 24px;
+  background: linear-gradient(135deg, #ff00c8, #00f0ff);
+  border: none;
+  border-radius: 15px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff00c8, 0 0 20px #00f0ff;
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+#startGameBtn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(30deg);
+  transition: all 0.3s ease;
+}
+
+#startGameBtn:hover::after {
+  top: 150%;
+  left: 150%;
+}
+
+#startGameBtn:hover {
+  transform: scale(1.1) rotate(2deg);
+  box-shadow: 0 0 15px #ff00c8, 0 0 25px #00f0ff;
+}
+
+.road-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: repeating-linear-gradient(
+    90deg,
+    #fff 0,
+    #fff 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  opacity: 0.7;
+}
+
+.road-line.top {
+  top: 10px;
+  animation: moveLeft 100s linear infinite; /* Bergerak ke kiri */
+}
+
+.road-line.bottom {
+  bottom: 10px;
+  animation: moveRight 100s linear infinite; /* Bergerak ke kanan */
+}
+
+@keyframes moveLeft {
+  0% { background-position: 0 0; }
+  100% { background-position: -20px 0; }
+}
+
+@keyframes moveRight {
+  0% { background-position: 0 0; }
+  100% { background-position: 20px 0; }
+}
+
+@keyframes moveLeftReverse {
+  0% { background-position: 0 0; }
+  100% { background-position: 20px 0; }
+}
+
+@keyframes moveRightReverse {
+  0% { background-position: 0 0; }
+  100% { background-position: -20px 0; }
 }
 
 @keyframes fadeIn {
